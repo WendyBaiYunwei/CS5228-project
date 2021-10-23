@@ -48,9 +48,9 @@ def get_similar(base_result, base_result_i):
     useful_features = df[['price', 'age', 'mileage']]
     base_result_features = useful_features.iloc[base_result_i.index.to_list()]
     pair_wise_sim = cosine_similarity(useful_features, base_result_features)
-    w_price = 5
-    w_age = 3
-    w_mileage = 3
+    w_price = 5 # based on assumptions
+    w_age = 2
+    w_mileage = 2 
     df['similarity_num']=pair_wise_sim[:, 0] * w_price  +\
         pair_wise_sim[:, 1] * w_age + \
             pair_wise_sim[:, 4] * w_mileage
@@ -61,16 +61,12 @@ def get_similar(base_result, base_result_i):
     return res[:R_SIZE]
 
 def get_base_recommendation(query):
-    print(cv.transform([query]))
     query_feature=tfidf_transformer.transform(cv.transform([query]))
     cos=cosine_similarity(query_feature,tfidfs)[0]
-    print(cos)
     df['similarity']=cos
 
-    # df['similarity']=df.apply(get_similarity,axis=1)
     base_result=df.sort_values(by=['similarity'],ascending=False)
     base_result_i=df.sort_values(by=['similarity'],ascending=False)
-
     return (base_result[:R_SIZE], base_result_i[:R_SIZE])
 
 base_result, base_result_i=get_base_recommendation(query)
