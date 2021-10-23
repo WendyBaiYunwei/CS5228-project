@@ -7,7 +7,7 @@ import csv
 import re
 
 
-df = pd.read_csv('train.csv')
+df = pd.read_csv('numerical_cleaned.csv')
 
 
 useless=['listing_id','indicative_price','opc_schem']
@@ -43,9 +43,19 @@ tfidf_transformer.fit(word_cnt)
 tfidfs=tfidf_transformer.transform(cv.transform(df['soup']))
 query="A big comfortable car with 1 owner and 320i gt m-sports model"
 
+def get_similar(base_result_i):
+    useful_features = df[['price', 'mileage']]
+    base_result_features = useful_features.iloc[base_result_i.index.to_list()]
+    pair_wise_sim = cosine_similarity(useful_features, base_result_features)
+    w_price = 5
+    w_mileage = 3
+    df['similarity_num']=pair_wise_sim[:, 0] * w_price  +\
+            pair_wise_sim[:, 2] * w_mileage
+    res=df.sort_values(by=['similarity_num', 'similarity'],ascending=False)
 
+    return res[:5]
 
-def get_recommendation(query):
+def get_base_recommendation(query):
     print(cv.transform([query]))
     query_feature=tfidf_transformer.transform(cv.transform([query]))
     cos=cosine_similarity(query_feature,tfidfs)[0]
@@ -53,9 +63,14 @@ def get_recommendation(query):
     df['similarity']=cos
 
     # df['similarity']=df.apply(get_similarity,axis=1)
-    result=df.sort_values(by=['similarity'],ascending=False)
-    return result
+    base_result=df.sort_values(by=['similarity'],ascending=False)
+    base_result_i=df.sort_values(by=['similarity'],ascending=False)
 
-res=get_recommendation(query)
+    return (base_result[:5], base_result_i[:5])
 
-print(res.head(10))
+base_result, base_result_i=get_base_recommendation(query)
+extended = get_similar(base_result_i)
+
+res = [base_result, extended]
+res = pd.concat(res)
+print(res)
