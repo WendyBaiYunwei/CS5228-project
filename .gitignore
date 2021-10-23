@@ -3,5 +3,4 @@ train.csv.zip
 .ipynb_checkpoints/Data-cleaning-checkpoint.ipynb
 test.csv/test.csv
 train.csv/train.csv
-train.csv
 train/train.csv
