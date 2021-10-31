@@ -44,7 +44,7 @@ tfidf_transformer.fit(word_cnt)
 tfidfs=tfidf_transformer.transform(cv.transform(df['soup']))
 query="A big comfortable car with 1 owner and 320i gt m-sports model"
 
-def get_similar(base_result, base_result_i):
+def get_similar(base_result, base_result_i, size=R_SIZE):
     useful_features = df[['price', 'age', 'mileage']]
     base_result_features = useful_features.iloc[base_result_i.index.to_list()]
     pair_wise_sim = cosine_similarity(useful_features, base_result_features)
@@ -58,8 +58,9 @@ def get_similar(base_result, base_result_i):
     valid_types = list(base_result['type_of_vehicle'].values)
     is_valid = res.type_of_vehicle.isin(valid_types)
     res=res[is_valid]
-    return res[:R_SIZE]
+    return res[:size]
 
+## add other attributes to query
 def get_base_recommendation(query):
     query_feature=tfidf_transformer.transform(cv.transform([query]))
     cos=cosine_similarity(query_feature,tfidfs)[0]
