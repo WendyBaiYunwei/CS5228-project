@@ -9,3 +9,5 @@ test/test.csv
 train.csv
 test.csv
 >>>>>>> Stashed changes
+.ipynb_checkpoints/
+*.csv
