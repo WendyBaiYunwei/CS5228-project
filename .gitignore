@@ -3,4 +3,9 @@ train.csv.zip
 .ipynb_checkpoints/Data-cleaning-checkpoint.ipynb
 train.csv/train.csv
 train/train.csv
+<<<<<<< Updated upstream
 test/test.csv
+=======
+train.csv
+test.csv
+>>>>>>> Stashed changes
