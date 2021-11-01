@@ -46,18 +46,11 @@ query="A big comfortable car with 1 owner and 320i gt m-sports model"
 
 def get_similar(base_result, base_result_i, size=R_SIZE):
     useful_features = df[['price', 'age', 'mileage']]
-    base_result_features = useful_features.iloc[base_result_i.index.to_list()]
+    base_result_features = np.array(useful_features.iloc[base_result_i]).reshape(1, -1)
     pair_wise_sim = cosine_similarity(useful_features, base_result_features)
-    w_price = 5 # based on assumptions
-    w_age = 2
-    w_mileage = 2 
-    df['similarity_num']=pair_wise_sim[:, 0] * w_price  +\
-        pair_wise_sim[:, 1] * w_age + \
-            pair_wise_sim[:, 4] * w_mileage
-    res=df.sort_values(by=['similarity_num', 'similarity'],ascending=False)
-    valid_types = list(base_result['type_of_vehicle'].values)
-    is_valid = res.type_of_vehicle.isin(valid_types)
-    res=res[is_valid]
+    df['similarity_num']=pair_wise_sim
+    res=df.sort_values(by=['similarity_num'],ascending=False)
+    res=res[res.type_of_vehicle == base_result['type_of_vehicle']]
     return res[:size]
 
 ## add other attributes to query
@@ -71,7 +64,7 @@ def get_base_recommendation(query):
     return (base_result[:R_SIZE], base_result_i[:R_SIZE])
 
 base_result, base_result_i=get_base_recommendation(query)
-extended = get_similar(base_result, base_result_i)
+extended = get_similar(base_result[0], base_result_i[0])
 
 res = [base_result, extended]
 res = pd.concat(res)
