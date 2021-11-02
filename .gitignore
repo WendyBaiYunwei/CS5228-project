@@ -12,3 +12,4 @@ test.csv
 .ipynb_checkpoints/
 *.csv
 __pycache__/
+*.png
