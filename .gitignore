@@ -13,3 +13,6 @@ test.csv
 *.csv
 __pycache__/
 *.png
+*.xlsx
+*.JPG
+*.zip
