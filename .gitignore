@@ -10,8 +10,8 @@ train.csv
 test.csv
 >>>>>>> Stashed changes
 .ipynb_checkpoints/
-*.csv
 __pycache__/
+*.csv
 *.png
 *.xlsx
 *.JPG
