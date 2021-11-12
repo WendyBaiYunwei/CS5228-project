@@ -8,7 +8,7 @@ import re
 
 R_SIZE = 5 # number of items to recommend
 
-df = pd.read_csv('../task1/ml_approach/data/train_basic.csv')
+df = pd.read_csv('./train_basic.csv')
 df['title']=df['title'].fillna('')
 df['description']=df['description'].fillna('')
 df['features']=df['features'].fillna('')

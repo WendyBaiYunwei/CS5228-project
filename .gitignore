@@ -11,8 +11,12 @@ test.csv
 >>>>>>> Stashed changes
 .ipynb_checkpoints/
 __pycache__/
-*.csv
 *.png
 *.xlsx
 *.JPG
 *.zip
+task1/ml_approach/poor_results.csv
+task1/ml_approach/data/refilled_dereg_test.csv
+task1/ml_approach/data/refilled_dereg_train.csv
+task1/ml_approach/predictions/
+task1/
